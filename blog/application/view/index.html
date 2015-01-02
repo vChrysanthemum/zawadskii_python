@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <style>
+        html,body {
+            height:100%;width:100%;
+            padding:0;margin:0;
+            font-size:14px;
+            font: 14px/2 AvenirNext-Regular, "proxima-nova", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", "Open Sans", "Helvetica Neue", Arial, sans-serif;
+            color:#f7f7f7;
+            background:#000;
+            -webkit-font-smoothing:antialiased;
+        }
+        #main {
+            background:#404040;
+            width:960px;
+            height:96%;
+            margin:10px auto;
+            padding:3px;
+        }
+        #opera {
+            padding:5px;
+        }
+        #table_command_line {
+            border-bottom:1px solid #fff;
+            width:100%;
+            height:100%;
+        }
+        #command_line {
+            outline:none;
+            margin:0 auto;
+            text-align:left;
+        }
+        p {
+            margin:0;
+        }
+    </style>
+    <body>
+        <table id="main" border=0 cellpadding="0" cellspacing="0">
+            <tr>
+                <td align="center" valign="middle" height="30">
+                <div id="prev_command_line"></div>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" id="opera">
+                    <center>
+                        终端游戏
+                        <br />
+                        使用命令行来访问一些网站，或使用一些互联网服务；
+                        <br />
+                        命令行输入框在底部，输入 cat /blog/o/help 试试看？
+                        <br />
+                    </center>
+                </td>
+            </tr>
+            <tr>
+                <td align="center" valign="bottom" height="30">
+
+                    <table id="table_command_line" border="0" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td width="30" align="center">&gt;</td>
+                            <td>
+                                <div id="command_line" contenteditable="true" onkeydown="enterIn(this, event);"></div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </div>
+    </table>
+    <script>
+        var doc_command_line = document.getElementById('command_line');
+        var doc_prev_command_line = document.getElementById('prev_command_line');
+        var doc_opera = document.getElementById('opera');
+        var request = new XMLHttpRequest();
+        var requesting = 0;
+        doc_command_line.focus();
+        /*
+        document.onkeydown = function(e){
+            if(!e) e = window.event;
+            doc_command_line.focus();
+            if((e.keyCode || e.which) == 13){
+                go();
+            }
+        }
+        */
+
+        function go() {
+            query = doc_command_line.innerText;
+            doc_command_line.innerHTML = '';
+            if (1 == requesting) {
+                return false;
+            }
+            doc_prev_command_line.innerHTML = query;
+
+            requesting = 1;
+
+            request.open('GET', '/eval?q='+query, true);
+            request.onload = function() {
+                if (request.status >= 200 && request.status < 400) {
+                    ret = eval("("+request.responseText+")");
+                    doc_opera.innerHTML = ret.data;
+                } 
+                else {
+                    alert('测试失败');
+                }
+                requesting = 0;
+                doc_command_line.innerHTML = '';
+                doc_command_line.focus();
+            };
+            request.onerror = function() {
+                alert('网络错误');
+                requesting = 0;
+                doc_command_line.innerHTML = '';
+                doc_command_line.focus();
+            };
+            request.send();
+        }
+
+        function enterIn(doc, evt) {
+            var evt=evt?evt:(window.event?window.event:null);//兼容IE和FF
+            if (evt.keyCode==13){
+                go();
+            }
+        }
+    </script>
+</html>

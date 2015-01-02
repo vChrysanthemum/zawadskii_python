@@ -1,0 +1,7 @@
+MySQL-python
+pyquery
+requests
+lxml
+readline
+termcolor
+cssselect
