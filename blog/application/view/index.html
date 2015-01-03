@@ -77,6 +77,8 @@
         var doc_opera = document.getElementById('opera');
         var request = new XMLHttpRequest();
         var requesting = 0;
+        var commands = new Array();
+        var current_command = 0;
         doc_command_line.focus();
         /*
         document.onkeydown = function(e){
@@ -90,6 +92,8 @@
 
         function go() {
             query = doc_command_line.innerText;
+            commands[ commands.length ] = query;
+            current_command = commands.length;
             doc_command_line.innerHTML = '';
             if (1 == requesting) {
                 return false;
@@ -121,8 +125,24 @@
         }
 
         function enterIn(doc, evt) {
-            var evt=evt?evt:(window.event?window.event:null);//兼容IE和FF
-            if (evt.keyCode==13){
+            var evt=evt?evt:(window.event?window.event:null);//兼容IE和FF 
+            if (38 == evt.keyCode) {
+                if (current_command-1 >= 0) {
+                    current_command--;
+                    doc_command_line.innerHTML = commands[current_command];
+                }
+            }
+            else if (40 == evt.keyCode) {
+                if (current_command < commands.length-1) {
+                    current_command++;
+                    doc_command_line.innerHTML = commands[current_command];
+                }
+                else {
+                    current_command = commands.length;
+                    doc_command_line.innerHTML = '';
+                }
+            }
+            else if (13 == evt.keyCode) {
                 go();
             }
         }
