@@ -1,6 +1,7 @@
 <?php
 
 define('ERR_CODE_OK', 0);
+define('ERR_CODE_ERR', -1);
 
 Class helper_Api {
 
