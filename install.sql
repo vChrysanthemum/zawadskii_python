@@ -25,8 +25,7 @@ insert into b_text(text_id, node_id, content) values(1,3,
     终端游戏 
     使用命令行来访问一些网站，或使用一些互联网服务； 
     还在设计、开发中
-    命令行输入框在底部，输入 cat /blog/o/help 试试看？ 
-    或者输入 cat /dev/v2ex 试试看？ ');
+    命令行输入框在底部，输入 cat /blog/o/help 试试看？ ');
 insert into b_text(text_id, node_id, content) values(2,4,
     '
     帮助文档
@@ -38,7 +37,7 @@ insert into b_text(text_id, node_id, content) values(2,4,
     有三种文件类型
         directory:目录结构
         text:普通文本
-        character_special:参考，字符设备文件，还在开发中...，试试 cat /dev/v2ex');
+        character_special:参考，字符设备文件，还在开发中...');
 
 
 drop table if exists b_character_special;
